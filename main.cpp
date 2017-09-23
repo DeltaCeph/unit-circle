@@ -3,6 +3,8 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <string>
 #include <cmath>
 
@@ -31,7 +33,7 @@ class Texture
         bool loadFromFile(std::string path);
 
         //Load text from font and string
-        bool loadFromRenderedText(std::string textureText, SDL_Color textColor);
+        bool loadFromRenderedText(std::string textureText, SDL_Color gTextColor);
 
         //Deallocate texture
         void free();
@@ -73,6 +75,8 @@ TTF_Font* gFont = NULL;
 //Text Textures
 Texture gTextBuffer;
 
+//Global text color
+SDL_Color gTextColor = {0, 0, 0};
 
 Texture::Texture()
 {
@@ -125,13 +129,13 @@ bool Texture::loadFromFile(std::string path)
     return cTexture != NULL;
 }
 
-bool Texture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
+bool Texture::loadFromRenderedText(std::string textureText, SDL_Color TextColor)
 {
     //Get rid of old texture
     free();
 
     //Render text
-    SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+    SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), TextColor);
     if(textSurface == NULL)
     {
         printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
@@ -263,9 +267,7 @@ bool loadMedia()
     }
     else
     {
-        //Prep Text Texture
-        SDL_Color textColor = {0, 0, 0};
-        if(!gTextBuffer.loadFromRenderedText("The caffinated mathimatician jumps over a lazy pack of foxes.", textColor))
+        if(!gTextBuffer.loadFromRenderedText("The caffinated mathimatician does trig in her sleep.", gTextColor))
         {
             printf("Failed to render text!\n");
             success = false;
@@ -351,114 +353,112 @@ void drawAngle(int xs, int ys, double input, int radius)
 
     SDL_Delay(delay);
 
-    SDL_Color textColor = {0, 0, 0};
-
     int switchBuff = input;
 
     switch(switchBuff)
     {
         case 0:
-        gTextBuffer.loadFromRenderedText("0pi (1, 0)", textColor);
+        gTextBuffer.loadFromRenderedText("0pi (1, 0)", gTextColor);
         gTextBuffer.render((xs + r_x) + 5, (ys - r_y) - gTextBuffer.getHeight());
         SDL_RenderPresent(gRenderer);
         break;
 
         case 30:
-        gTextBuffer.loadFromRenderedText("1/6pi (sqrt(3)/2, 1/2)", textColor);
+        gTextBuffer.loadFromRenderedText("1/6pi (sqrt(3)/2, 1/2)", gTextColor);
         gTextBuffer.render((xs + r_x) + 7, (ys - r_y) - gTextBuffer.getHeight()/3);
         SDL_RenderPresent(gRenderer);
         break;
 
         case 45:
-        gTextBuffer.loadFromRenderedText("1/4pi (sqrt(2)/2, sqrt(2)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("1/4pi (sqrt(2)/2, sqrt(2)/2)", gTextColor);
         gTextBuffer.render((xs + r_x) + 5, (ys - r_y) - gTextBuffer.getHeight()/2);
         SDL_RenderPresent(gRenderer);
         break;
 
         case 60:
-        gTextBuffer.loadFromRenderedText("1/3pi (1/2, sqrt(3)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("1/3pi (1/2, sqrt(3)/2)", gTextColor);
         gTextBuffer.render((xs + r_x) + 3, (ys - r_y) - gTextBuffer.getHeight());
         SDL_RenderPresent(gRenderer);
         break;
 
 
         case 90:
-        gTextBuffer.loadFromRenderedText("1/2pi (0, 1)", textColor);
+        gTextBuffer.loadFromRenderedText("1/2pi (0, 1)", gTextColor);
         gTextBuffer.render((xs + r_x) - (gTextBuffer.getWidth() / 2), (ys - r_y) - gTextBuffer.getHeight());
         SDL_RenderPresent(gRenderer);
         break;
 
         case 120:
-        gTextBuffer.loadFromRenderedText("2/3pi (-1/2, sqrt(3)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("2/3pi (-1/2, sqrt(3)/2)", gTextColor);
         gTextBuffer.render(((xs + r_x) - 3) - gTextBuffer.getWidth(), (ys - r_y) - gTextBuffer.getHeight());
         SDL_RenderPresent(gRenderer);
         break;
 
         case 135:
-        gTextBuffer.loadFromRenderedText("3/4pi (-sqrt(2)/2, sqrt(2)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("3/4pi (-sqrt(2)/2, sqrt(2)/2)", gTextColor);
         gTextBuffer.render(((xs + r_x) - 5) - gTextBuffer.getWidth(), (ys - r_y) - gTextBuffer.getHeight()/2);
         SDL_RenderPresent(gRenderer);
         break;
 
         case 150:
-        gTextBuffer.loadFromRenderedText("5/6pi (-sqrt(3)/2, 1/2)", textColor);
+        gTextBuffer.loadFromRenderedText("5/6pi (-sqrt(3)/2, 1/2)", gTextColor);
         gTextBuffer.render(((xs + r_x) - 7) - gTextBuffer.getWidth(), (ys - r_y)- gTextBuffer.getHeight()/3);
         SDL_RenderPresent(gRenderer);
         break;
 
 
         case 180:
-        gTextBuffer.loadFromRenderedText("1pi (-1, 0)", textColor);
+        gTextBuffer.loadFromRenderedText("1pi (-1, 0)", gTextColor);
         gTextBuffer.render((xs + r_x) - gTextBuffer.getWidth() - 5, (ys - r_y) - (gTextBuffer.getHeight()/2));
         SDL_RenderPresent(gRenderer);
         break;
 
         case 210:
-        gTextBuffer.loadFromRenderedText("7/6pi (-sqrt(3)/2, -1/2)", textColor);
+        gTextBuffer.loadFromRenderedText("7/6pi (-sqrt(3)/2, -1/2)", gTextColor);
         gTextBuffer.render((xs + r_x) - gTextBuffer.getWidth(), (ys - r_y));
         SDL_RenderPresent(gRenderer);
         break;
 
         case 225:
-        gTextBuffer.loadFromRenderedText("5/4pi (-sqrt(2)/2, -sqrt(2)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("5/4pi (-sqrt(2)/2, -sqrt(2)/2)", gTextColor);
         gTextBuffer.render((xs + r_x) - gTextBuffer.getWidth(), (ys - r_y));
         SDL_RenderPresent(gRenderer);
         break;
 
         case 240:
-        gTextBuffer.loadFromRenderedText("4/3pi (-1/2, -sqrt(3)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("4/3pi (-1/2, -sqrt(3)/2)", gTextColor);
         gTextBuffer.render((xs + r_x) - gTextBuffer.getWidth(), (ys - r_y));
         SDL_RenderPresent(gRenderer);
         break;
 
 
         case 270:
-        gTextBuffer.loadFromRenderedText("3/2pi (0, -1)", textColor);
+        gTextBuffer.loadFromRenderedText("3/2pi (0, -1)", gTextColor);
         gTextBuffer.render((xs + r_x) - gTextBuffer.getWidth()/2, (ys - r_y) + (gTextBuffer.getHeight()/2));
         SDL_RenderPresent(gRenderer);
         break;
 
         case 300:
-        gTextBuffer.loadFromRenderedText("5/3pi (1/2, -sqrt(3)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("5/3pi (1/2, -sqrt(3)/2)", gTextColor);
         gTextBuffer.render((xs + r_x), (ys - r_y));
         SDL_RenderPresent(gRenderer);
         break;
 
         case 315:
-        gTextBuffer.loadFromRenderedText("7/4pi (sqrt(2)/2, -sqrt(2)/2)", textColor);
+        gTextBuffer.loadFromRenderedText("7/4pi (sqrt(2)/2, -sqrt(2)/2)", gTextColor);
         gTextBuffer.render((xs + r_x), (ys - r_y));
         SDL_RenderPresent(gRenderer);
         break;
 
         case 330:
-        gTextBuffer.loadFromRenderedText("11/6pi (sqrt(3)/2, -1/2)", textColor);
+        gTextBuffer.loadFromRenderedText("11/6pi (sqrt(3)/2, -1/2)", gTextColor);
         gTextBuffer.render((xs + r_x), (ys - r_y));
         SDL_RenderPresent(gRenderer);
         break;
 
 
         case 360:
-        gTextBuffer.loadFromRenderedText("2pi (1, 0)", textColor);
+        gTextBuffer.loadFromRenderedText("2pi (1, 0)", gTextColor);
         gTextBuffer.render((xs + r_x) + 7, (ys - r_y) + gTextBuffer.getHeight()/2);
         SDL_RenderPresent(gRenderer);
         break;
@@ -492,8 +492,38 @@ void popularLines(int x0, int y0, int radi)
     drawAngle(x0, y0, 360.0, radi);
 }
 
+SDL_Color paintMixer()
+{
+    SDL_Color result = {0, 0, 0};
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+
+    int randBuffer = 0;
+
+    srand(time(NULL));
+    randBuffer = (rand()*17)%255;
+    red = randBuffer;
+    SDL_Delay(17);
+
+    srand(time(NULL));
+    randBuffer = (rand()*19)%255;
+    green = randBuffer;
+    SDL_Delay(19);
+
+    srand(time(NULL));
+    randBuffer = (rand()*23)%255;
+    blue = randBuffer;
+    SDL_Delay(23);
+
+    result = {red, green, blue};
+
+    return result;
+}
+
 int drawn = 0;
 int lined = 0;
+int loop = -1;
 
 int main( int argc, char* args[] )
 {
@@ -536,20 +566,32 @@ int main( int argc, char* args[] )
                             case SDLK_ESCAPE:
                                 quit = true;
                                 break;
+
+                            case SDLK_r:
+                                SDL_Delay(25);
+                                gTextColor = paintMixer();
+                                drawn = 0;
+                                lined = 0;
+                                break;
+
+                            case SDLK_q:
+                                loop = loop * -1;
+                                break;
                         }
                     }
                 }
 
+                //Clear Screen
                 if(drawn == 0)
                 {
-                    //Clear Screen
                     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                     SDL_RenderClear( gRenderer );
                 }
 
-                //Draw points
-                SDL_SetRenderDrawColor( gRenderer, 0, 0, 0, 0xFF );
+                //Set color
+                SDL_SetRenderDrawColor( gRenderer, gTextColor.r, gTextColor.g, gTextColor.b, 0xFF );
 
+                //Draw circle
                 if(drawn == 0)
                 {
                     traceCircle(OriginX, OriginY, rad);
@@ -557,11 +599,21 @@ int main( int argc, char* args[] )
                     drawn = 1;
                 }
 
+                //Plot angles
                 if(drawn == 1 || lined == 0)
                 {
                     popularLines(OriginX, OriginY, rad);
 
                     lined = 1;
+                }
+
+                //Check to loop
+                if(loop > 0)
+                {
+                    drawn = 0;
+                    lined = 0;
+                    gTextColor = paintMixer();
+                    SDL_Delay(1500);
                 }
 
                 //Update screen
