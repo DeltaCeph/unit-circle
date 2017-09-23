@@ -575,6 +575,7 @@ int main( int argc, char* args[] )
                                 break;
 
                             case SDLK_q:
+                                SDL_Delay(25);
                                 loop = loop * -1;
                                 break;
                         }
