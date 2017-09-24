@@ -334,13 +334,13 @@ void traceCircle (int x0, int y0, int radius)
         }
 
         SDL_RenderPresent( gRenderer );
-        SDL_Delay(25);
+        SDL_Delay(15);
     }
 }
 
 void drawAngle(int xs, int ys, double input, int radius)
 {
-    int delay = 50;
+    int delay = 30;
 
     int r_x = 0;
     int r_y = 0;
