@@ -1,0 +1,3 @@
+q - Turn loop on/off
+r - Single new circle
+esc - Close the program
